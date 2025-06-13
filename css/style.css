@@ -43,6 +43,10 @@ border-bottom: 2px solid var(--secondary-color);
   padding: 100px 0 0;
 }
 
+#wrapper-admin img.logo{
+  width: 50%;
+}
+
 img.logo{
   width: 100%;
   height: auto;
