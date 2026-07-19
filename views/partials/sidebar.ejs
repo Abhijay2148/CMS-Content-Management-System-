@@ -1,0 +1,37 @@
+<div id="sidebar" class="col-md-4">
+  <!-- search box -->
+  <div class="search-box-container">
+      <h4>Search</h4>
+      <form class="search-post" action="/search" method ="GET">
+          <div class="input-group">
+              <input type="text" name="search" class="form-control" placeholder="Search .....">
+              <span class="input-group-btn">
+                  <button type="submit" class="btn btn-danger">Search</button>
+              </span>
+          </div>
+      </form>
+  </div>
+  <!-- /search box -->
+  <!-- recent posts box -->
+  <div class="recent-post-container">
+      <h4>Recent Posts</h4>
+      <% latestNews.forEach(function(latestNew){ %>
+      <div class="recent-post">
+          <a class="post-img" href="/single/<%= latestNew._id %>">
+              <img src="/uploads/<%= latestNew.image %>" alt=""/>
+          </a>
+          <div class="post-content">
+              <h5><a href="/single/<%= latestNew._id %>"><%= latestNew.title %></a></h5>
+              <span>
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                  <a href="/category/<%= latestNew.category.slug %>"><%= latestNew.category.name %></a>
+              </span>
+              <span>
+                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                  <%= latestNew.createdAt.toDateString() %>
+              </span>
+          </div>
+      </div>
+      <% }); %>
+  </div>
+</div>
