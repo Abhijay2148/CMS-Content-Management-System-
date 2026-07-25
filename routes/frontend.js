@@ -13,6 +13,7 @@ router.get('/search', siteController.search);
 router.get('/author/:name', siteController.author);
 router.post('/single/:id/comment', siteController.addComment);
 
+router.get('/testing', siteController.testing);
 
 router.use((req, res, next) => {
         res.status(404).render('404', {

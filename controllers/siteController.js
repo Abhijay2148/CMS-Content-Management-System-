@@ -8,6 +8,7 @@ const commentModel = require('../models/Comment');
 const paginate = require('../utils/paginate')
 const createError = require('../utils/error-message')
 
+
 const index = async (req,res) => {
 
   const paginatedNews = await paginate(newsModel, {}, 
@@ -104,11 +105,18 @@ const addComment = async (req,res, next) => {
   }
 }
 
+const testing = async(req, res) => {
+  const news = await newsModel.find()
+  res.json({ news })
+}
+
+
 module.exports = {
   index,
   articleByCategories,
   singleArticle,
   search,
   author,
-  addComment
+  addComment,
+  testing
 }

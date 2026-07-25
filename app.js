@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
+const minifyHTML = require('express-minify-html-terser');
 const session = require('express-session');
 const flash = require('connect-flash');
+const compression = require('compression');
 const multer = require('multer');
 const app = express();
 require('dotenv').config();
@@ -14,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //Middleware
 app.use(expressLayouts);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {maxAge: '2d'}));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(session({
         secret: 'secret',
@@ -24,7 +26,31 @@ app.use(session({
 app.set('view engine', 'ejs');
 app.use(cookieParser());
 app.set('layout', 'layout');
+app.use(compression({
+        level: 9,
+        threshold: 10*1024,
+        filter: (req, res) => {
+            if(req.headers['x-no-compression']) {
+                return false
+            }
 
+            return compression.filter(req, res);
+        }
+}));
+
+app.use(minifyHTML({
+    override:      true,
+    exception_url: false,
+    htmlMinifier: {
+        removeComments:            true,
+        collapseWhitespace:        true,
+        collapseBooleanAttributes: true,
+        removeAttributeQuotes:     true,
+        removeEmptyAttributes:     true,
+        minifyJS:                  true
+    }
+}));
+ 
 
 mongoose.connect(process.env.MONGODB_URI)
         .then(() => console.log('MongoDB Connected'))
